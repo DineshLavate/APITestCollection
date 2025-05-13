@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  run-postman-collection:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,17 +21,19 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install Newman
+      run: npm install -g newman
 
-    - name: Run tests
-      run: npm test
+    - name: Run Postman collection with Newman
+      run: |
+        mkdir -p reports
+        newman run Simform_gorest_API_collection.json \
+          --environment Simform_gorest_environment.json \
+          --reporters cli,json \
+          --reporter-json-export reports/newman-report.json
 
-    - name: Lint code
-      run: npm run lint
-
-    - name: Run Postman collection
-      uses: actions/postman-cli-runner@v1
+    - name: Upload Newman report
+      uses: actions/upload-artifact@v3
       with:
-        collection: Simform_gorest_API_collection.json
-        environment: Simform_gorest_environment.json
+        name: newman-report
+        path: reports/newman-report.json
