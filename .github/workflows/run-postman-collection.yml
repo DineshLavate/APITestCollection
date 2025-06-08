@@ -1,0 +1,35 @@
+name: Run Postman Collection with Newman
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-postman-collection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman Collection with Newman
+        run: |
+          newman run Simform_gorest_API_collection.json \
+            --environment Simform_gorest_environment.json \
+            --reporters cli,junit \
+            --reporter-junit-export newman-report.xml
+
+      - name: Upload Newman Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: newman-report.xml
