@@ -9,6 +9,7 @@ on:
 jobs:
   run-postman-collection:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,6 +40,7 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
+          secure: true
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "Newman Execution Report"
@@ -46,9 +48,9 @@ jobs:
           from: ${{ secrets.SMTP_USERNAME }}
           body: |
             Hi,
-            
+
             Please find the attached Newman execution report.
-            
+
             Regards,
             GitHub Actions
           attachments: newman-report.xml
