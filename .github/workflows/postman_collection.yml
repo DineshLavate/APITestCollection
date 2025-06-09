@@ -58,4 +58,4 @@ jobs:
             
             Regards,
             GitHub Actions
-          attachments: NewmanReports.xml
+          attachments: testResult/report.html
