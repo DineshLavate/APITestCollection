@@ -32,8 +32,9 @@ jobs:
         run: |
           newman run Simform_gorest_API_collection.json \
             -e Simform_gorest_environment.json \
-            -r htmlextra \
-            --reporter-htmlextra-export testResult/report.html || true
+            -r htmlextra,json-summary \
+            --reporter-htmlextra-export testResult/report.html \
+            --reporter-json-summary-export testResult/summary.json || true
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
